@@ -17,29 +17,44 @@ def parse():
 						required=True,
 						help='defines machine learning model',
 						choices=['decisiontree', 'neuralnetwork', 'knn'])
+	parser.add_argument('-a',
+						type=str,
+						default='no',
+						help='defines whether set is anonymized or not',
+						choices=['no', 'yes'])
+	parser.add_argument('-pdt',
+						type=str,
+						nargs=2,
+						default=[4, 16],
+                    	help='training parameters for decision tree model: MAX_DEPTH, MIN_LEAVES')
+	parser.add_argument('-pkn',
+						type=str,
+						nargs=1,
+						default=[4],
+                    	help='training parameters for knn model: K')
+	parser.add_argument('-pnn',
+						type=str,
+						default=[1, 16, 50],
+						nargs=3,
+                    	help='training parameters for neural network model: # of hidden layers, size or layers, # of epochs')
+	parser.add_argument('-ak',
+						type=str,
+						nargs=1,
+                    	help='defines k value for k-anonymity')
 
 	args = parser.parse_args()
 
 	dataset = args.d
 	model = args.m
-
-	"""
-	if dataset == 'census':
-		data_path = '/home/graba4/Desktop/ML_Exercise1_BegovicA_HodovicM_KovacsP/CI/adult.data'
-	else:
-		# other path
-		data_path = '/home/graba4/Desktop/ML_Exercise1_BegovicA_HodovicM_KovacsP/CI/adult.names'
+	anonymized = args.a
 
 	if model == 'decisiontree':
-		model_path = 1
+		parameters = args.pdt
+	elif model == 'knn':
+		parameters = args.pkn
 	elif model == 'neuralnetwork':
-		model_path = 2
+		parameters = args.pnn
 	else:
-		model_path = 3
-	"""
-	return dataset, model
+		parameters = 0
 
-#data1, model1 = parse()
-
-#census_income= pd.read_csv(data1, sep=',', engine='python', na_values='?')
-#print(census_income.iloc[0])
+	return dataset, model, anonymized, parameters
