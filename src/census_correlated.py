@@ -11,7 +11,7 @@ def synthetize():
 	#get_ipython().run_line_magic('matplotlib', 'auto')
 	# Adding current direcotry into sys.path
 	# input dataset
-	input_data = './data/adult_ssn.csv'
+	input_data = './adult_data.csv'
 	# location of two output files
 	mode = 'correlated_attribute_mode'
 	description_file = f'./out/{mode}/description.json'
@@ -23,7 +23,7 @@ def synthetize():
 	threshold_value = 20
 
 	# specify categorical attributes
-	categorical_attributes = {'education': True}
+	categorical_attributes = {'education': True, 'native-country': True}
 
 	# specify which attributes are candidate keys of input dataset.
 	candidate_keys = {'ssn': True}
