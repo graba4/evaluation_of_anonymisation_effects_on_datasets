@@ -1,4 +1,4 @@
-def K_ano_Titan(k=8):
+def K_ano_Titan_func(k=8):
     import pandas as pd
     import numpy as np
 

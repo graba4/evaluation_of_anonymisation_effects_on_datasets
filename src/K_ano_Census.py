@@ -1,4 +1,4 @@
-def K_ano_Census(k=8):
+def K_ano_Census_func(k=8):
     import pandas as pd
     import numpy as np
 
