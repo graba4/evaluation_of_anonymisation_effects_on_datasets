@@ -1,0 +1,1 @@
+The "onlyano" files contain the results from the runs where we kept only the anonimized columns, the simple accuracy files contains the data where we kept all columns and the hpwsex is the anonimized columns + the hours-per-week and sex colums as well. We can see a difference here, with increasing k slightly decreasing accuracy.
