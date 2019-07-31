@@ -34,7 +34,7 @@ def parse():
                     	help='training parameters for knn model: K')
 	parser.add_argument('-pnn',
 						type=str,
-						default=[1, 16, 50],
+						default=[2, 32, 50],
 						nargs=3,
                     	help='training parameters for neural network model: # of hidden layers, size or layers, # of epochs')
 	parser.add_argument('-ak',

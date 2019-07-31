@@ -18,14 +18,14 @@
         ],
         "non_categorical_string_attributes": [],
         "attributes_in_BN": [
-            "SibSp",
-            "Sex",
-            "Age",
+            "Survived",
             "Fare",
-            "Parch",
-            "Pclass",
             "Embarked",
-            "Survived"
+            "Age",
+            "Pclass",
+            "Sex",
+            "Parch",
+            "SibSp"
         ]
     },
     "attribute_description": {
