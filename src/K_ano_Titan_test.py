@@ -41,7 +41,10 @@ def K_ano_Titan(k=1):
         df[name] = df[name].astype('category')
 
     cols = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked', 'Survived']
+    
     df = df[cols]
+
+
 
     def get_spans(df, partition, scale=None):
         """

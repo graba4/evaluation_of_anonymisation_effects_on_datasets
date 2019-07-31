@@ -4,7 +4,7 @@ def K_ano_Titan_func(k=8):
 
     THE_MOST_IMPORTANT_K = k  # Changed this, so i can use it in the split function as well, without any kind of refactoring.
 
-    df = pd.read_csv("./titanic/test.csv", sep=",", header=0, index_col=False,
+    df = pd.read_csv("./titanic/train.csv", sep=",", header=0, index_col=False,
                      engine='python');  # We load the data using Pandas
 
     df.drop(columns=["PassengerId", "Name"], inplace=True)  # dropped because unique for every row
