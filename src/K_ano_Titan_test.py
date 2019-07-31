@@ -3,11 +3,11 @@ def K_ano_Titan(k=1):
     import numpy as np
 
     THE_MOST_IMPORTANT_K = k  # Changed this, so i can use it in the split function as well, without any kind of refactoring.
-    df_info = pd.read_csv("./titanic/gender_submission.csv", sep=",", header=0, index_col=False,
+    df_info = pd.read_csv("../titanic/gender_submission.csv", sep=",", header=0, index_col=False,
                      engine='python');  # We load the data using Pandas
-    df_data = pd.read_csv("./titanic/train.csv", sep=",", header=0, index_col=False,
+    df_data = pd.read_csv("../titanic/train.csv", sep=",", header=0, index_col=False,
                      engine='python');  # We load the data using Pandas
-    df = pd.read_csv("./titanic/test.csv", sep=",", header=0, index_col=False,
+    df = pd.read_csv("../titanic/test.csv", sep=",", header=0, index_col=False,
                      engine='python');  # We load the data using Pandas
 
     info_ID = np.array(df_info['PassengerId'])
