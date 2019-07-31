@@ -1,25 +1,48 @@
-def K_ano_Census(k=1):
+def K_ano_Titan(k=1):
     import pandas as pd
     import numpy as np
 
     THE_MOST_IMPORTANT_K = k  # Changed this, so i can use it in the split function as well, without any kind of refactoring.
+    df_info = pd.read_csv("./titanic/gender_submission.csv", sep=",", header=0, index_col=False,
+                     engine='python');  # We load the data using Pandas
+    df_data = pd.read_csv("./titanic/train.csv", sep=",", header=0, index_col=False,
+                     engine='python');  # We load the data using Pandas
+    df = pd.read_csv("./titanic/test.csv", sep=",", header=0, index_col=False,
+                     engine='python');  # We load the data using Pandas
 
-    names = (
-    'age', 'workclass', 'fnlwgt', 'education', 'education-num', 'marital-status', 'occupation', 'relationship', 'race',
-    'sex', 'capital-gain', 'capital-loss', 'hours-per-week', 'native-country', 'income')
-    categorical = ['workclass', 'marital-status', 'occupation', 'relationship', 'sex', 'native-country', 'race',
-                   'income', ]
-    df_data = pd.read_csv("adult.data", sep=", ", header=None, names=names, index_col=False,
-                          engine='python')  # We load the data using Pandas
-    df = pd.read_csv("adult.test", sep=", ", header=None, names=names, index_col=False,
-                     engine='python')  # We load the data using Pandas
+    info_ID = np.array(df_info['PassengerId'])
+    info_surv = np.array(df_info['Survived'])
 
-    df = df.drop(columns=['fnlwgt', 'education'])
+    # Actually they are in the same order, but this is the unoptimized, yet "correct" solution
+    survarray = []
+    for i in range(len(df)):
+        ID = df['PassengerId'][i]
+        survarray.append(info_surv[np.where(info_ID == ID)[0][0]])
+    df['Survived'] = survarray
+
+    df.drop(columns=["PassengerId", "Name"], inplace=True)  # dropped because unique for every row
+    df.drop(columns=["Ticket", "Cabin"], inplace=True)  # dropped because almost unique for every row
+    df.dropna(inplace=True)
+
+    df_data.drop(columns=["PassengerId", "Name"], inplace=True)  # dropped because unique for every row
+    df_data.drop(columns=["Ticket", "Cabin"], inplace=True)  # dropped because almost unique for every row
+    df_data.dropna(inplace=True)
+
+    categorical = [
+        'Survived',
+        'Pclass',
+        'Sex',
+        'SibSp',
+        'Parch',
+        'Embarked'
+    ]
 
     for name in categorical:
         df[name] = df[name].astype('category')
 
-    # Code from the project mentioned in the report! (sligtly modified)
+    cols = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked', 'Survived']
+    df = df[cols]
+
     def get_spans(df, partition, scale=None):
         """
         :param        df: the dataframe for which to calculate the spans
@@ -40,6 +63,7 @@ def K_ano_Census(k=1):
         return spans
 
     full_spans = get_spans(df, df.index)
+    full_spans
 
     def split(df, partition, column):
         """
@@ -50,7 +74,8 @@ def K_ano_Census(k=1):
         """
         dfp = df[column][partition]
         if column in categorical:
-            # Commenting out the next 4 lines does a different splitting.
+            # Commenting out the next 4 lines should make the world a better place, but who am i to know this for sure...
+            # But it does not... Reality is
             values = dfp.unique()
             lv = set(values[:len(values) // 2])
             rv = set(values[len(values) // 2:])
@@ -71,8 +96,7 @@ def K_ano_Census(k=1):
                     bestindex = i
             if cumulated[bestindex + 1] >= THE_MOST_IMPORTANT_K and (
                 cumulated[-1] - cumulated[bestindex + 1]) >= THE_MOST_IMPORTANT_K:
-                if np.abs(cumulated[-1] / 2 - cumulated[bestindex]) > np.abs(
-                                        cumulated[-1] / 2 - cumulated[bestindex + 1]):
+                if np.abs(cumulated[-1] / 2 - cumulated[bestindex]) > np.abs(cumulated[-1] / 2 - cumulated[bestindex + 1]):
                     bestindex += 1
 
             lv = set(sortedvals[:bestindex, 0])
@@ -84,7 +108,7 @@ def K_ano_Census(k=1):
             dfr = dfp.index[dfp >= median]
 
             if len(dfl) < THE_MOST_IMPORTANT_K or len(dfr) < THE_MOST_IMPORTANT_K:
-                median = dfp.mean()
+                median = dfp.mean()  # Very clever hack, 200IQ code... xD
 
             dfl = dfp.index[dfp < median]
             dfr = dfp.index[dfp >= median]
@@ -109,6 +133,7 @@ def K_ano_Census(k=1):
         if len(partition) < THE_MOST_IMPORTANT_K:
             return False
         return True
+
 
     def partition_dataset(df, feature_columns, sensitive_column, scale, is_valid):
         """
@@ -138,12 +163,14 @@ def K_ano_Census(k=1):
                 finished_partitions.append(partition)
         return finished_partitions
 
-    feature_columns = ['age', 'education-num', 'race', 'native-country', 'workclass']
-    sensitive_column = 'income'
+    feature_columns = ['Sex', 'Age', 'SibSp', 'Parch', 'Embarked']
+    sensitive_column = 'Survived'
     finished_partitions = partition_dataset(df, feature_columns, sensitive_column, full_spans, is_k_anonymous)
 
     def agg_categorical_column(series):
+        series = series.astype(str)
         return [','.join(set(series))]
+
 
     def agg_numerical_column(series):
         return [series.mean()]
@@ -156,8 +183,10 @@ def K_ano_Census(k=1):
             else:
                 aggregations[column] = agg_numerical_column
         rows = []
+        # print(aggregations)
+        # print(partitions)
         for i, partition in enumerate(partitions):
-            if i % 100 == 1:
+            if i % 10 == 1:
                 print("Finished {} partitions...".format(i))
             if max_partitions is not None and i > max_partitions:
                 break
@@ -188,23 +217,24 @@ def K_ano_Census(k=1):
 
     plt.figure()
     plt.hist(sizes)
-    plt.savefig(str(THE_MOST_IMPORTANT_K) + "_census_test.png")
+    plt.savefig(str(THE_MOST_IMPORTANT_K) + "_titanic_test.png")
 
     uniqitems = {}
     for col in categorical:
-        uniqitems[col] = df_data[col].unique()  # Using the uniq values from the training set.
+        uniqitems[col] = df_data[col].unique()
 
     rows = []
 
     for rowind in range(len(dfn2)):
-        if rowind % 500 == 0:
+        if rowind % 71 == 0:
             print(rowind / len(dfn2) * 100)
         currow = dfn2.iloc[rowind, :].copy()
         for col in categorical:
-            if col != 'income':
-                values = currow[col].split(',')
+            if col != 'Survived':
+                values = str(currow[col]).split(',')
 
                 for possibleitem in uniqitems[col]:
+                    possibleitem = str(possibleitem)
                     if possibleitem in values:
                         currow = currow.append(pd.Series([1 / len(values)], [col + '_' + possibleitem]))
                     else:
@@ -213,7 +243,7 @@ def K_ano_Census(k=1):
         rows.append(currow.copy())
 
     final_set = pd.DataFrame(rows)
-    final_set.to_csv(str(THE_MOST_IMPORTANT_K) + "_census_test.csv")
+
+    final_set.to_csv(str(THE_MOST_IMPORTANT_K) + "_titanic_test.csv")
 
     return final_set
-
