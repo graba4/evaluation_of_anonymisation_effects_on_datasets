@@ -1,0 +1,265 @@
+{
+    "meta": {
+        "num_tuples": 891,
+        "num_attributes": 8,
+        "num_attributes_in_BN": 8,
+        "all_attributes": [
+            "Survived",
+            "Pclass",
+            "Sex",
+            "Age",
+            "SibSp",
+            "Parch",
+            "Fare",
+            "Embarked"
+        ],
+        "candidate_keys": [
+            "ssn"
+        ],
+        "non_categorical_string_attributes": [],
+        "attributes_in_BN": [
+            "SibSp",
+            "Sex",
+            "Age",
+            "Fare",
+            "Parch",
+            "Pclass",
+            "Embarked",
+            "Survived"
+        ]
+    },
+    "attribute_description": {
+        "Survived": {
+            "name": "Survived",
+            "data_type": "Integer",
+            "is_categorical": true,
+            "is_candidate_key": false,
+            "min": 0,
+            "max": 1,
+            "missing_rate": 0.0,
+            "distribution_bins": [
+                0,
+                1
+            ],
+            "distribution_probabilities": [
+                0.5309087781637576,
+                0.4690912218362426
+            ]
+        },
+        "Pclass": {
+            "name": "Pclass",
+            "data_type": "Integer",
+            "is_categorical": true,
+            "is_candidate_key": false,
+            "min": 1,
+            "max": 3,
+            "missing_rate": 0.0,
+            "distribution_bins": [
+                1,
+                2,
+                3
+            ],
+            "distribution_probabilities": [
+                0.0,
+                0.4482722331481348,
+                0.5517277668518652
+            ]
+        },
+        "Sex": {
+            "name": "Sex",
+            "data_type": "String",
+            "is_categorical": true,
+            "is_candidate_key": false,
+            "min": 4,
+            "max": 6,
+            "missing_rate": 0.0,
+            "distribution_bins": [
+                "female",
+                "male"
+            ],
+            "distribution_probabilities": [
+                0.5328127087685633,
+                0.4671872912314366
+            ]
+        },
+        "Age": {
+            "name": "Age",
+            "data_type": "Float",
+            "is_categorical": false,
+            "is_candidate_key": false,
+            "min": 0.42,
+            "max": 80.0,
+            "missing_rate": 0.19865319865319866,
+            "distribution_bins": [
+                0.42,
+                4.399,
+                8.378,
+                12.357000000000001,
+                16.336000000000002,
+                20.315,
+                24.294000000000004,
+                28.273000000000003,
+                32.252,
+                36.231,
+                40.21,
+                44.189,
+                48.168000000000006,
+                52.147000000000006,
+                56.126000000000005,
+                60.105000000000004,
+                64.084,
+                68.063,
+                72.042,
+                76.021
+            ],
+            "distribution_probabilities": [
+                0.01307610992010454,
+                0.0,
+                0.09554329794203371,
+                0.015712121026116275,
+                0.07996047402332446,
+                0.0,
+                0.0975421557468176,
+                0.09521839684684089,
+                0.08754624000783429,
+                0.2656215272725505,
+                0.07594138169974037,
+                0.0,
+                0.009593099967867754,
+                0.06575756454461769,
+                0.0,
+                0.051491283791702674,
+                0.04699634721044936,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        "SibSp": {
+            "name": "SibSp",
+            "data_type": "Integer",
+            "is_categorical": true,
+            "is_candidate_key": false,
+            "min": 0,
+            "max": 8,
+            "missing_rate": 0.0,
+            "distribution_bins": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                8
+            ],
+            "distribution_probabilities": [
+                0.39365771427806623,
+                0.1647929981977252,
+                0.004972877726866886,
+                0.43657640979734175,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        "Parch": {
+            "name": "Parch",
+            "data_type": "Integer",
+            "is_categorical": true,
+            "is_candidate_key": false,
+            "min": 0,
+            "max": 6,
+            "missing_rate": 0.0,
+            "distribution_bins": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            ],
+            "distribution_probabilities": [
+                0.8412169647230504,
+                0.01049595228197884,
+                0.07862724621528393,
+                0.0,
+                0.0,
+                0.0,
+                0.06965983677968678
+            ]
+        },
+        "Fare": {
+            "name": "Fare",
+            "data_type": "Float",
+            "is_categorical": false,
+            "is_candidate_key": false,
+            "min": 0.0,
+            "max": 512.3292,
+            "missing_rate": 0.0,
+            "distribution_bins": [
+                0.0,
+                25.61646,
+                51.23292,
+                76.84938,
+                102.46584,
+                128.0823,
+                153.69876,
+                179.31522,
+                204.93168,
+                230.54814,
+                256.1646,
+                281.78106,
+                307.39752,
+                333.01398,
+                358.63044,
+                384.2469,
+                409.86336,
+                435.47982,
+                461.09628,
+                486.71274
+            ],
+            "distribution_probabilities": [
+                0.18510209754137252,
+                0.01072246200638255,
+                0.009493704025296907,
+                0.10566169301076488,
+                0.0,
+                0.10198182216102473,
+                0.0,
+                0.2540570839336683,
+                0.0,
+                0.25616840830223403,
+                0.022682380489985134,
+                0.054130348529270844,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        "Embarked": {
+            "name": "Embarked",
+            "data_type": "String",
+            "is_categorical": true,
+            "is_candidate_key": false,
+            "min": 1,
+            "max": 1,
+            "missing_rate": 0.002244668911335578,
+            "distribution_bins": [
+                "C",
+                "Q",
+                "S"
+            ],
+            "distribution_probabilities": [
+                0.2764759969350449,
+                0.11237340152997725,
+                0.6111506015349779
+            ]
+        }
+    }
+}

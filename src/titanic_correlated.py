@@ -1,5 +1,5 @@
 import os, sys
-sys.path.append(os.getcwd() + '/census/DataSynthesizer/')
+sys.path.append(os.getcwd() + '/titanic/DataSynthesizer/')
 from DataDescriber import DataDescriber
 from DataGenerator import DataGenerator
 from ModelInspector import ModelInspector
@@ -11,11 +11,11 @@ def synthetize():
 	#get_ipython().run_line_magic('matplotlib', 'auto')
 	# Adding current direcotry into sys.path
 	# input dataset
-	input_data = './census/adult_data.csv'
+	input_data = './titanic/train_dropped.csv'
 	# location of two output files
 	mode = 'correlated_attribute_mode'
-	description_file = f'./census/out/{mode}/description.json'
-	synthetic_data = f'./census/out/{mode}/sythetic_data.csv'
+	description_file = f'./titanic/out/correlated_attribute_mode/description.json'
+	synthetic_data = f'./titanic/out/correlated_attribute_mode/sythetic_data.csv'
 
 
 	# An attribute is categorical if its domain size is less than this threshold.
@@ -23,7 +23,7 @@ def synthetize():
 	threshold_value = 20
 
 	# specify categorical attributes
-	categorical_attributes = {'education': True, 'native-country': True}
+	categorical_attributes = {'Sex': True, 'Embarked': True}
 
 	# specify which attributes are candidate keys of input dataset.
 	candidate_keys = {'ssn': True}
@@ -37,7 +37,7 @@ def synthetize():
 	degree_of_bayesian_network = 2
 
 	# Number of tuples generated in synthetic dataset.
-	num_tuples_to_generate = 32561 # Here 32561 is the same as input dataset, but it can be set to another number.
+	num_tuples_to_generate = 891 # Here 32561 is the same as input dataset, but it can be set to another number.
 
 
 	# ### Step 3 DataDescriber
@@ -47,14 +47,13 @@ def synthetize():
 	# 3. Save dataset description to a file on local machine.
 
 	describer = DataDescriber(category_threshold=threshold_value)
-	describer.describe_dataset_in_correlated_attribute_mode(dataset_file=input_data, 
+	describer.describe_dataset_in_independent_attribute_mode(dataset_file=input_data, 
 	                                                        epsilon=epsilon, 
-	                                                        k=degree_of_bayesian_network,
 	                                                        attribute_to_is_categorical=categorical_attributes,
 	                                                        attribute_to_is_candidate_key=candidate_keys)
 	describer.save_dataset_description_to_file(description_file)
 
-	display_bayesian_network(describer.bayesian_network)
+	#display_bayesian_network(describer.bayesian_network)
 
 
 	# ### Step 4 generate synthetic dataset
@@ -64,7 +63,7 @@ def synthetize():
 	# 3. Save it to local machine.
 
 	generator = DataGenerator()
-	generator.generate_dataset_in_correlated_attribute_mode(num_tuples_to_generate, description_file)
+	generator.generate_dataset_in_independent_mode(num_tuples_to_generate, description_file)
 	generator.save_synthetic_data(synthetic_data)
 
 
