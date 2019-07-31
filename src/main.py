@@ -3,6 +3,7 @@ import ci_decisiontrees
 import K_ano_Census
 import K_ano_Titan
 import census_correlated
+import titanic_correlated
 
 
 data, model, anonimity, param, k_values, do_ano = cli.parse()
@@ -46,8 +47,8 @@ elif data == 'titanic':
 				K_ano_Titan.K_ano_Titan_func(int(k_values[i]))
 		print('not yet')
 	elif anonimity == 'synth':
-		# amars datasynth .py
-		print('not yet')
+		if do_ano == 'yes':
+			titanic_correlated.synthetize()
 	else:
 		print('no more anonymization methods implemented')
 
