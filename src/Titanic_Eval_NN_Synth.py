@@ -44,7 +44,22 @@ def train_and_eval(layers, size_of_layers, epochs):
     census_test.drop(columns=['Ticket'], axis=1,inplace = True)
     census_test.drop(columns=['PassengerId'], axis=1,inplace = True)
 
-    
+    df_info = pd.read_csv("titanic/gender_submission.csv", sep=",", header=0, index_col=False,
+                     engine='python');  # We load the data using Pandas
+
+    df = pd.read_csv("titanic/test.csv", sep=",", header=0, index_col=False,
+                     engine='python');  # We load the data using Pandas
+
+    info_ID = np.array(df_info['PassengerId'])
+    info_surv = np.array(df_info['Survived'])
+
+    # Actually they are in the same order, but this is the unoptimized, yet "correct" solution
+    survarray = []
+    for i in range(len(df)):
+        ID = df['PassengerId'][i]
+        survarray.append(info_surv[np.where(info_ID == ID)[0][0]])
+    df['Survived'] = survarray
+    census_test['Survived'] = survarray
 
 
 
@@ -93,7 +108,7 @@ def train_and_eval(layers, size_of_layers, epochs):
 
     for rowind in range(len(census_test)):
         if rowind % 71 == 0:
-            print(rowind / len(test_feature) * 100)
+            print(rowind / len(census_test) * 100)
         currow = census_test.iloc[rowind, :].copy()
         for col in categorical:
             if col != 'Survived':
@@ -112,22 +127,7 @@ def train_and_eval(layers, size_of_layers, epochs):
 
 
 
-    df_info = pd.read_csv("titanic/gender_submission.csv", sep=",", header=0, index_col=False,
-                     engine='python');  # We load the data using Pandas
 
-    df = pd.read_csv("titanic/test.csv", sep=",", header=0, index_col=False,
-                     engine='python');  # We load the data using Pandas
-
-    info_ID = np.array(df_info['PassengerId'])
-    info_surv = np.array(df_info['Survived'])
-
-    # Actually they are in the same order, but this is the unoptimized, yet "correct" solution
-    survarray = []
-    for i in range(len(df)):
-        ID = df['PassengerId'][i]
-        survarray.append(info_surv[np.where(info_ID == ID)[0][0]])
-    df['Survived'] = survarray
-    census_test['Survived'] = survarray
 
     data_feature = census_data.drop(columns=['Survived']).copy()
     data_label = census_data['Survived'].copy()
@@ -155,6 +155,7 @@ def train_and_eval(layers, size_of_layers, epochs):
     times = np.zeros(len(SIZES))
     accs = np.zeros(len(SIZES))
     NAVG = 3
+    print(data_feature.head())
     for i in range(len(SIZES)):
         for counter in range(NAVG):
             classifier = Sequential()
