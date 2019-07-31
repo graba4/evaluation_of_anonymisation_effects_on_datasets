@@ -1,6 +1,7 @@
 import cli
 import ci_decisiontrees
-import census_k_anonimdata
+import K_ano_Census
+import K_ano_Titan
 import census_correlated
 
 
@@ -12,7 +13,7 @@ if data == 'census':
 	if anonimity == 'gen':
 		if do_ano == 'yes':
 			for i in range(len(k_values)):
-				census_k_anonimdata.build_dataset_of_k_anonymity(int(k_values[i]))
+				K_ano_Census.K_ano_Census_func(int(k_values[i]))
 	elif anonimity == 'synth':
 		if do_ano == 'yes':
 			census_correlated.synthetize()
@@ -40,7 +41,9 @@ if data == 'census':
 elif data == 'titanic':
 	# anonymization part will be done here
 	if anonimity == 'gen':
-		# peters k-ano .py
+		if do_ano == 'yes':
+			for i in range(len(k_values)):
+				K_ano_Titan.K_ano_Titan_func(int(k_values[i]))
 		print('not yet')
 	elif anonimity == 'synth':
 		# amars datasynth .py
