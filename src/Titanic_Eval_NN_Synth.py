@@ -43,6 +43,8 @@ def train_and_eval(layers, size_of_layers, epochs):
     census_test.drop(columns=['Name'], axis=1,inplace = True)
     census_test.drop(columns=['Ticket'], axis=1,inplace = True)
     census_test.drop(columns=['PassengerId'], axis=1,inplace = True)
+    census_test.drop(columns=['Cabin'], axis=1,inplace = True)
+
 
     df_info = pd.read_csv("titanic/gender_submission.csv", sep=",", header=0, index_col=False,
                      engine='python');  # We load the data using Pandas
@@ -155,7 +157,7 @@ def train_and_eval(layers, size_of_layers, epochs):
     times = np.zeros(len(SIZES))
     accs = np.zeros(len(SIZES))
     NAVG = 3
-    print(data_feature.head())
+    print(test_feature.head())
     for i in range(len(SIZES)):
         for counter in range(NAVG):
             classifier = Sequential()
